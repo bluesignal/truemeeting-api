@@ -1,0 +1,21 @@
+<?xml version="1.0"?>
+<!DOCTYPE ruleset>
+<ruleset
+    name="phpmd ruleset for TrueMeeting Auth Server"
+    xmlns="http://pmd.sourceforge.net/ruleset/2.0.0"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://pmd.sourceforge.net/ruleset/2.0.0 http://pmd.sourceforge.net/ruleset_2_0_0.xsd">
+
+    <rule ref="rulesets/unusedcode.xml" />
+    <rule ref="rulesets/codesize.xml" />
+    <rule ref="rulesets/controversial.xml" />
+    <rule ref="rulesets/design.xml" />
+    <rule ref="rulesets/naming.xml">
+       <exclude name="ShortVariable" />
+    </rule>
+    <rule ref="rulesets/naming.xml/ShortVariable">
+        <properties>
+            <property name="exceptions" value="id,i" />
+        </properties>
+    </rule>
+</ruleset>
