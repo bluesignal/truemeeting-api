@@ -23,7 +23,7 @@ use stdClass;
 
 class TrueMeetingClient
 {
-    const DEFAULT_SERVER = 'https://api.truemeeting.io';
+    const DEFAULT_SERVER = 'https://api.truemeeting.app';
 
     /**
      * @var ClientInterface
