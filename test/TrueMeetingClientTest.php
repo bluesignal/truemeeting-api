@@ -12,6 +12,7 @@ namespace BlueSignal\TrueMeetingApi;
 
 use BlueSignal\TrueMeetingApi\Exception\TrueMeetingException;
 use BlueSignal\TrueMeetingApi\Exception\UnauthorizedException;
+use DateTime;
 use GuzzleHttp\Client;
 use GuzzleHttp\Handler\MockHandler;
 use GuzzleHttp\HandlerStack;
@@ -61,6 +62,32 @@ class TrueMeetingClientTest extends TestCase
         $client = $this->getInstance($mock);
         $client->createRoom('demo', 'Welcome to the demo room');
     }
+
+    /**
+     * @throws TrueMeetingException
+     * @throws UnauthorizedException
+     */
+    public function testGenerateToken()
+    {
+        $mock = new MockHandler([
+            new Response(201, [], json_encode([
+                'uuid' => '1234abc',
+                'name' => 'generic',
+                'expires' => '2000-01-01T12:00:00+01:00',
+                'token' => '0123456789abcdef'
+            ])),
+        ]);
+
+        $client = $this->getInstance($mock);
+        $token = $client->generateToken('room', 'abc1234');
+        $expires = DateTime::createFromFormat(DateTime::ATOM, '2000-01-01T12:00:00+01:00');
+
+        self::assertEquals('1234abc', $token->getUuid());
+        self::assertEquals('generic', $token->getName());
+        self::assertEquals('0123456789abcdef', $token->getToken());
+        self::assertEquals($expires, $token->getExpires());
+    }
+
 
     private function getInstance(MockHandler $mock, $token = 'abc123'): TrueMeetingClient
     {

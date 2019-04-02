@@ -12,6 +12,7 @@ namespace BlueSignal\TrueMeetingApi;
 
 use BlueSignal\TrueMeetingApi\Entity\Organization;
 use BlueSignal\TrueMeetingApi\Entity\Room;
+use BlueSignal\TrueMeetingApi\Entity\Token;
 use BlueSignal\TrueMeetingApi\Exception\InvalidException;
 use BlueSignal\TrueMeetingApi\Exception\TrueMeetingException;
 use BlueSignal\TrueMeetingApi\Exception\UnauthorizedException;
@@ -110,18 +111,20 @@ class TrueMeetingClient
      *
      * Save this token safe and securely, it will be provided only once
      *
+     * @param string $name
      * @param string $organizationUuid
-     * @return string
-     * @throws UnauthorizedException
+     * @return Token
      * @throws TrueMeetingException
+     * @throws UnauthorizedException
      */
-    public function generateToken(string $organizationUuid): string
+    public function generateToken(string $name, string $organizationUuid): Token
     {
         $json = $this->post('organization/token', [
+            'name' => $name,
             'uuid' => $organizationUuid,
         ]);
 
-        return $json->token;
+        return Token::fromObject($json);
     }
 
     /**
