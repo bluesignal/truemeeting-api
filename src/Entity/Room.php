@@ -40,6 +40,11 @@ class Room
     private $private;
 
     /**
+     * @var string
+     */
+    private $url;
+
+    /**
      * @param stdClass $object
      * @return Room
      */
@@ -50,7 +55,8 @@ class Room
             ->setName($object->name)
             ->setWelcomeMessage($object->welcome_message)
             ->setMaxParticipants($object->max_participants)
-            ->setPrivate($object->private);
+            ->setPrivate($object->private)
+            ->setUrl($object->url);
     }
 
     /**
@@ -148,6 +154,17 @@ class Room
      */
     public function getUrl(): string
     {
-        return 'https://truemeeting.app/#' . $this->uuid;
+        return $this->url;
     }
+
+    /**
+     * @param string $url
+     * @return Room
+     */
+    public function setUrl(string $url): Room
+    {
+        $this->url = $url;
+        return $this;
+    }
+
 }

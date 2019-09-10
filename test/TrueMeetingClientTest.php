@@ -31,7 +31,8 @@ class TrueMeetingClientTest extends TestCase
             new Response(200, [], '{
                 "uuid":"d6cebb7fa1708100ef651889061cdde4",
                 "name":"Demo2","welcome_message":"Welcome to this room!",
-                "max_participants":2,"private":true,"server":null
+                "max_participants":2,"private":true,"server":null,
+                "url":"https://truemeeting.dev/#d6cebb7fa1708100ef651889061cdde4"
             }'),
         ]);
 
@@ -42,6 +43,7 @@ class TrueMeetingClientTest extends TestCase
         self::assertEquals('Demo2', $room->getName());
         self::assertEquals('Welcome to this room!', $room->getWelcomeMessage());
         self::assertEquals(2, $room->getMaxParticipants());
+        self::assertEquals('https://truemeeting.dev/#d6cebb7fa1708100ef651889061cdde4', $room->getUrl());
         self::assertTrue($room->isPrivate());
     }
 
@@ -74,7 +76,8 @@ class TrueMeetingClientTest extends TestCase
                 'uuid' => '1234abc',
                 'name' => 'generic',
                 'expires' => '2000-01-01T12:00:00+01:00',
-                'token' => '0123456789abcdef'
+                'token' => '0123456789abcdef',
+                'url' => 'https://truemeeting.dev/#1234abc',
             ])),
         ]);
 
