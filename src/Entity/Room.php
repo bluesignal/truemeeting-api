@@ -166,5 +166,4 @@ class Room
         $this->url = $url;
         return $this;
     }
-
 }

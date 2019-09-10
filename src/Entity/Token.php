@@ -10,7 +10,6 @@
 
 namespace BlueSignal\TrueMeetingApi\Entity;
 
-
 use DateTime;
 use stdClass;
 
