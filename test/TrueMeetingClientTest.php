@@ -10,6 +10,7 @@
 
 namespace BlueSignal\TrueMeetingApi;
 
+use BlueSignal\TrueMeetingApi\Entity\User;
 use BlueSignal\TrueMeetingApi\Exception\TrueMeetingException;
 use BlueSignal\TrueMeetingApi\Exception\UnauthorizedException;
 use DateTime;
@@ -45,6 +46,40 @@ class TrueMeetingClientTest extends TestCase
         self::assertEquals(2, $room->getMaxParticipants());
         self::assertEquals('https://truemeeting.dev/#d6cebb7fa1708100ef651889061cdde4', $room->getUrl());
         self::assertTrue($room->isPrivate());
+    }
+
+    /**
+     * @throws TrueMeetingException
+     * @throws UnauthorizedException
+     */
+    public function testCreateUser()
+    {
+        $mock = new MockHandler([
+            new Response(200, [], '{
+            "uuid":"2a1aa397fc6ab9f72882e1ce278929da",
+            "display_name":"John Doe",
+            "email":"j.doe@example.com",
+            "first_name":"John",
+            "last_name":"Doe",
+            "active":true
+            }'),
+        ]);
+
+        $client = $this->getInstance($mock);
+
+        $user = (new User())
+            ->setFirstName('John')
+            ->setLastName('Doe')
+            ->setEmail('j.doe@example.com');
+
+        $client->createUser($user);
+
+        self::assertEquals('2a1aa397fc6ab9f72882e1ce278929da', $user->getUuid());
+        self::assertEquals('John Doe', $user->getDisplayName());
+        self::assertEquals('j.doe@example.com', $user->getEmail());
+        self::assertEquals('John', $user->getFirstName());
+        self::assertEquals('Doe', $user->getLastName());
+        self::assertTrue($user->isActive());
     }
 
     /**

@@ -13,6 +13,7 @@ namespace BlueSignal\TrueMeetingApi;
 use BlueSignal\TrueMeetingApi\Entity\Organization;
 use BlueSignal\TrueMeetingApi\Entity\Room;
 use BlueSignal\TrueMeetingApi\Entity\Token;
+use BlueSignal\TrueMeetingApi\Entity\User;
 use BlueSignal\TrueMeetingApi\Exception\InvalidException;
 use BlueSignal\TrueMeetingApi\Exception\TrueMeetingException;
 use BlueSignal\TrueMeetingApi\Exception\UnauthorizedException;
@@ -105,6 +106,29 @@ class TrueMeetingClient
     }
 
     /**
+     * Creates a new user
+     *
+     * If no password is provided the user will receive an e-mail how to setup one
+     *
+     * @param User $user
+     * @param string $password
+     * @param string $organizationUuid|null  **Reseller only**
+     * @throws TrueMeetingException
+     * @throws UnauthorizedException
+     */
+    public function createUser(User $user, string $password = null, string $organizationUuid = null): void
+    {
+        $json = $this->post('user', [
+            'first_name' => $user->getFirstName(),
+            'last_name' => $user->getLastName(),
+            'email' => $user->getEmail(),
+            'password' => $password,
+        ], ['organizationUuid' => $organizationUuid]);
+
+        User::fromObject($json, $user);
+    }
+
+    /**
      * Generate a new api token for the requested organization
      *
      * **Reseller only**
@@ -185,16 +209,18 @@ class TrueMeetingClient
     }
 
     /**
-     * @param $endpoint
-     * @param array $data
+     * @param string $endpoint
+     * @param string[] $data
+     * @param string[] $parameters
      * @return stdClass
      * @throws UnauthorizedException
      * @throws TrueMeetingException
      */
-    protected function post($endpoint, $data = []): stdClass
+    protected function post(string $endpoint, array $data = [], array $parameters = []): stdClass
     {
         $response = $this->http->post($this->getEndpoint($endpoint), [
             'headers' => $this->getDefaultHeaders($this->apiToken),
+            'query' => $parameters,
             'json' => $data,
             'http_errors' => false, // handleResponse will handle those
         ]);
