@@ -38,7 +38,7 @@ Documentation
 -------------
 The full documentation can be found at the link below.
 
-[TrueMeeting Documentation](https://developers.truemeeting.io)
+[TrueMeeting Documentation](https://developers.truemeeting.app)
 
 License
 -------
